@@ -1,12 +1,11 @@
 use std::{
-    os::unix::process::CommandExt,
-    process::{Command, Output},
+    io::Write, os::unix::process::CommandExt, process::{Command, Output}
 };
 
 use clap::Parser;
 
 use crate::{
-    commands::errors::CommandError, core::blocksim_command::BlockSimCommand, errors::Result,
+    commands::errors::CommandError, core::bl_command::BLCommand, errors::Result,
 };
 
 use super::subcommands::GetCommands;
@@ -20,14 +19,15 @@ pub struct GetArgs {
 impl GetArgs {
     pub fn get_k3s_nodes() -> Result<()> {
         match Command::new("sudo")
-            .arg("k3s")
-            .arg("kubectl")
+            .arg("k3d")
+            .arg("")
             .arg("get")
             .arg("nod")
             .output()
         {
             Ok(output) => {
-                println!("{}", String::from_utf8_lossy(&output.stdout));
+                // write the output to stdout
+                std::io::stdout().write_all(&output.stdout).unwrap();
                 Ok(())
             }
             Err(error) => return Err(CommandError::ClapError(error.into()).into()),
@@ -35,10 +35,11 @@ impl GetArgs {
     }
 }
 
-impl BlockSimCommand for GetArgs {
-    fn execute(&self) -> Result<()> {
+impl BLCommand for GetArgs {
+    fn run(&self) -> Result<()> {
         match &self.command {
             GetCommands::Nodes => GetArgs::get_k3s_nodes()?,
+            GetCommands::Clusters => println!("Getting clusters"),
         }
 
         Ok(())

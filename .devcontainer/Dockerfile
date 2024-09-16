@@ -1,2 +1,2 @@
-FROM mcr.microsoft.com/devcontainers/base:bookworm
+FROM mcr.microsoft.com/devcontainers/rust:1-1-bookworm
 

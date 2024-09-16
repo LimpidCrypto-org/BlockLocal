@@ -3,7 +3,7 @@ use std::process::Command;
 use clap::Parser;
 
 use crate::{
-    commands::errors::CommandError, core::blocksim_command::BlockSimCommand, errors::Result,
+    commands::errors::CommandError, core::bl_command::BLCommand, errors::Result,
     utils::processes::get_pid,
 };
 
@@ -25,8 +25,8 @@ impl StopArgs {
     }
 }
 
-impl BlockSimCommand for StopArgs {
-    fn execute(&self) -> Result<()> {
+impl BLCommand for StopArgs {
+    fn run(&self) -> Result<()> {
         StopArgs::stop_k3s()
     }
 }
