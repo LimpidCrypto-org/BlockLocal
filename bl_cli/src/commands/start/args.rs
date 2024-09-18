@@ -34,6 +34,23 @@ impl StartArgs {
 
         k3d_cli.run()
     }
+
+    pub fn add_blocklocal_redis_node() -> Result<BLOutput> {
+        let mut k3d_cli: K3DArgs = [
+            "node",
+            "create",
+            "blocklocal",
+            "redis",
+            "--role",
+            "agent",
+            "--label",
+            "blocklocal.redis=true",
+        ]
+        .as_slice()
+        .into();
+
+        k3d_cli.run()
+    }
 }
 
 impl BLCommandFn for StartArgs {

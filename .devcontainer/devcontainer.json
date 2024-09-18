@@ -4,7 +4,7 @@
 	"name": "blocklocal",
 	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
 	"dockerComposeFile": "docker-compose.yml",
-	"service": "app",
+	"service": "dev",
 	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
 	"customizations": {
 		"vscode": {
@@ -15,13 +15,28 @@
 				"GitHub.copilot-chat",
 				"waderyan.gitblame",
 				"donjayamanne.git-extension-pack",
-				"swellaby.rust-pack"
+				"swellaby.rust-pack",
+				"ms-kubernetes-tools.vscode-kubernetes-tools"
 			]
 		}
 	},
+	"postCreateCommand": "sudo chown -R vscode:vscode /workspaces",
 	"features": {
-		"ghcr.io/rio/features/k3d:1": {},
-		"ghcr.io/devcontainers/features/docker-in-docker:2": {}
+		// "ghcr.io/rio/features/k3d:1": {},
+		// "ghcr.io/devcontainers/features/docker-in-docker:2": {},
+		// : {
+		// 	"moby": true,
+		// 	"azureDnsAutoDetection": true,
+		// 	"installDockerBuildx": true,
+		// 	"installDockerComposeSwitch": true,
+		// 	"version": "latest",
+		// 	"dockerDashComposeVersion": "none"
+		// },
+		// "ghcr.io/devcontainers/features/kubectl-helm-minikube:1": {
+		// 	"version": "latest",
+		// 	"helm": "latest",
+		// 	"minikube": "none"
+		// }
 	}
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	// "features": {},
