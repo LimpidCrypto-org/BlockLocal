@@ -1,9 +1,10 @@
 .logo {
-    @apply w-20;
-    @apply h-20;
+  @apply w-20;
+  @apply h-20;
 
-    img {
+  ::ng-deep {
+    .circle-atom {
       @apply bg-white;
     }
+  }
 }
-

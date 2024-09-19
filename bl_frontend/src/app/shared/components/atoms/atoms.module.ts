@@ -9,6 +9,7 @@ import { LinkComponent } from './link/link.component';
 import { ModalComponent } from './modal/modal.component';
 import { Rotate180Component } from './rotate180/rotate180.component';
 import { NavigationComponent } from './navigation/navigation.component';
+import { FormComponent } from './form/form.component';
 
 
 
@@ -23,6 +24,7 @@ import { NavigationComponent } from './navigation/navigation.component';
     ModalComponent,
     Rotate180Component,
     NavigationComponent,
+    FormComponent,
   ],
   imports: [
     CommonModule
@@ -37,6 +39,7 @@ import { NavigationComponent } from './navigation/navigation.component';
     ModalComponent,
     Rotate180Component,
     NavigationComponent,
+    FormComponent,
   ]
 })
 export class AtomsModule { }

@@ -6,6 +6,7 @@
 .master-layout__content {
   @apply flex flex-col;
   @apply w-full min-h-screen;
+  @apply bg-dark-blue;
 }
 
 .master-layout__footer {
