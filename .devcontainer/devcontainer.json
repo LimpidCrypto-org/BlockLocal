@@ -16,33 +16,20 @@
 				"waderyan.gitblame",
 				"donjayamanne.git-extension-pack",
 				"swellaby.rust-pack",
-				"ms-kubernetes-tools.vscode-kubernetes-tools"
+				"ms-kubernetes-tools.vscode-kubernetes-tools",
+				"fill-labs.dependi"
 			]
 		}
 	},
-	"postCreateCommand": "sudo chown -R vscode:vscode /workspaces",
 	"features": {
-		// "ghcr.io/rio/features/k3d:1": {},
-		// "ghcr.io/devcontainers/features/docker-in-docker:2": {},
-		// : {
-		// 	"moby": true,
-		// 	"azureDnsAutoDetection": true,
-		// 	"installDockerBuildx": true,
-		// 	"installDockerComposeSwitch": true,
-		// 	"version": "latest",
-		// 	"dockerDashComposeVersion": "none"
-		// },
-		// "ghcr.io/devcontainers/features/kubectl-helm-minikube:1": {
-		// 	"version": "latest",
-		// 	"helm": "latest",
-		// 	"minikube": "none"
-		// }
-	}
-	// Features to add to the dev container. More info: https://containers.dev/features.
-	// "features": {},
+		"ghcr.io/devcontainers/features/docker-outside-of-docker:1": {}
+	},
+	"forwardPorts": [
+		8080
+	],
+	"postStartCommand": "chmod +x ./.devcontainer/start.sh && ./.devcontainer/start.sh"
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "privileged": true
-	// Use 'postCreateCommand' to run commands after the container is created.
 	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
 	// "remoteUser": "root"
 }
