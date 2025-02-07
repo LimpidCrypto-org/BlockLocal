@@ -7,8 +7,11 @@ edition = "2021"
 
 [dependencies]
 k3d = { path = "../k3d" }
-
-kube = "0.98.0"
+kube = { version = "0.98.0", features = ["runtime", "derive"] }
+k8s-openapi = { version = "0.24.0", features = ["latest"] }
 serde = { version = "1.0.217", features = ["derive"] }
 thiserror = { version = "2.0.11" }
 url = "2.5.4"
+
+[dev-dependencies]
+tokio = { version = "1.43.0", features = ["full"] }
