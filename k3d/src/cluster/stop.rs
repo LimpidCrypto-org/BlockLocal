@@ -16,7 +16,8 @@ impl K3dClusterStopArgs for K3d<K3dClusterStop> {
 
 impl<'a> K3dRun<'a> for K3d<K3dClusterStop> {
     fn run(&'a mut self) -> Result<()> {
-        self.cmd.spawn()?.wait_with_output()?;
+        let output = self.cmd.spawn()?.wait_with_output()?;
+        Self::check_for_fatal_errors(output)?;
 
         Ok(())
     }

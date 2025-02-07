@@ -15,15 +15,15 @@ pub mod stop;
 #[derive(Debug)]
 pub struct K3dCluster;
 
-pub trait K3dClusterCmd {
-    fn create(self, name: String) -> K3d<K3dClusterCreate>;
-    fn delete(self, clusters: Vec<String>) -> K3d<K3dClusterDelete>;
-    fn start(self, clusters: Vec<String>) -> K3d<K3dClusterStart>;
-    fn stop(self, clusters: Vec<String>) -> K3d<K3dClusterStop>;
+pub trait K3dNodeCmd {
+    fn create(self, name: &str) -> K3d<K3dClusterCreate>;
+    fn delete(self, clusters: Vec<&str>) -> K3d<K3dClusterDelete>;
+    fn start(self, clusters: Vec<&str>) -> K3d<K3dClusterStart>;
+    fn stop(self, clusters: Vec<&str>) -> K3d<K3dClusterStop>;
 }
 
-impl K3dClusterCmd for K3d<K3dCluster> {
-    fn create(mut self, name: String) -> K3d<K3dClusterCreate> {
+impl K3dNodeCmd for K3d<K3dCluster> {
+    fn create(mut self, name: &str) -> K3d<K3dClusterCreate> {
         self.cmd.arg("create").arg(name);
 
         K3d {
@@ -32,7 +32,7 @@ impl K3dClusterCmd for K3d<K3dCluster> {
         }
     }
 
-    fn delete(mut self, clusters: Vec<String>) -> K3d<K3dClusterDelete> {
+    fn delete(mut self, clusters: Vec<&str>) -> K3d<K3dClusterDelete> {
         self.cmd.arg("delete").args(clusters);
 
         K3d {
@@ -41,7 +41,7 @@ impl K3dClusterCmd for K3d<K3dCluster> {
         }
     }
 
-    fn start(mut self, clusters: Vec<String>) -> K3d<K3dClusterStart> {
+    fn start(mut self, clusters: Vec<&str>) -> K3d<K3dClusterStart> {
         self.cmd.arg("start").args(clusters);
 
         K3d {
@@ -50,7 +50,7 @@ impl K3dClusterCmd for K3d<K3dCluster> {
         }
     }
 
-    fn stop(mut self, clusters: Vec<String>) -> K3d<K3dClusterStop> {
+    fn stop(mut self, clusters: Vec<&str>) -> K3d<K3dClusterStop> {
         self.cmd.arg("stop").args(clusters);
 
         K3d {

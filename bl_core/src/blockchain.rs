@@ -1,4 +1,4 @@
-use k3d::{cluster::K3dClusterCmd, K3dCmd};
+use k3d::{cluster::K3dNodeCmd, K3dCmd};
 use url::Url;
 
 #[derive(Debug)]

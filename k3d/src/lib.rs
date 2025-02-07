@@ -1,11 +1,16 @@
-use std::{marker::PhantomData, process::Command};
+use std::{
+    marker::PhantomData,
+    process::{Command, Output},
+};
 
 pub mod cluster;
 mod errors;
+pub mod node;
 
 use cluster::K3dCluster;
 pub use errors::Error;
 use errors::Result;
+use node::K3dNode;
 
 #[derive(Debug)]
 pub struct K3dNoCmd;
@@ -24,6 +29,7 @@ pub trait K3dGlobalFlags<T> {
 
 pub trait K3dCmd {
     fn cluster(self) -> K3d<K3dCluster>;
+    fn node(self) -> K3d<K3dNode>;
 }
 
 pub trait K3dHelp<T> {
@@ -32,6 +38,15 @@ pub trait K3dHelp<T> {
 
 pub trait K3dRun<'a> {
     fn run(&'a mut self) -> Result<()>;
+    fn check_for_fatal_errors(output: Output) -> Result<()> {
+        if !output.status.success() {
+            let stderr = String::from_utf8(output.stderr)?;
+
+            Err(Error::CommandFailed(stderr))
+        } else {
+            Ok(())
+        }
+    }
 }
 
 impl K3d<K3dNoCmd> {
@@ -74,6 +89,15 @@ impl<T> K3dGlobalFlags<T> for K3d<T> {
 impl K3dCmd for K3d<K3dNoCmd> {
     fn cluster(mut self) -> K3d<K3dCluster> {
         self.cmd.arg("cluster");
+
+        K3d {
+            cmd: self.cmd,
+            t: PhantomData,
+        }
+    }
+
+    fn node(mut self) -> K3d<K3dNode> {
+        self.cmd.arg("node");
 
         K3d {
             cmd: self.cmd,
