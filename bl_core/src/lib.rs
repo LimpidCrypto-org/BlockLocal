@@ -1,6 +1,5 @@
 #![allow(async_fn_in_trait)]
 
-pub mod blockchain;
 pub mod client;
 mod db;
 pub mod errors;
