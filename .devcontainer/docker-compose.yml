@@ -12,11 +12,11 @@ services:
   db:
     image: postgres:latest
     environment:
-      POSTGRES_USER: $DB_USER
-      POSTGRES_PASSWORD: $DB_PASSWORD
-      POSTGRES_DB: $DB_NAME
+      POSTGRES_USER: $DATABASE_USER
+      POSTGRES_PASSWORD: $DATABASE_PASSWORD
+      POSTGRES_DB: $DATABASE_NAME
     ports:
-      - $DB_PORT:5432
+      - $DATABASE_PORT:5432
     restart: unless-stopped
     networks:
       - blocklocal
