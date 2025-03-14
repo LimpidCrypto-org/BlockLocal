@@ -18,7 +18,6 @@ use crate::errors::Result;
 #[derive(Debug)]
 pub struct Blockchain {
     name: String,
-    docker_image: Url,
     http_api: Option<Url>,
     ws_api: Option<Url>,
 }
@@ -31,7 +30,7 @@ pub trait BlockchainCluster {
 }
 
 pub trait BlockchainNode {
-    async fn create(&self, name: &str, config: Option<PathBuf>) -> Result<()>;
+    async fn create(&self, name: &str, role: &str, config: Option<PathBuf>) -> Result<()>;
     async fn start(&self, name: &str) -> Result<()>;
     async fn stop(&self, name: &str) -> Result<()>;
     async fn delete(&self, name: &str) -> Result<()>;
@@ -51,10 +50,6 @@ impl Blockchain {
             ws_api,
         }
     }
-
-    fn get_config(&self) -> PathBuf {
-        todo!()
-    }
 }
 
 impl BlockchainCluster for Blockchain {
@@ -63,9 +58,10 @@ impl BlockchainCluster for Blockchain {
         if let Some(config) = config {
             Ok(k3d
                 .k3s_arg(&format!("--config={}", config.to_str().unwrap()))
-                .run()?)
+                .run()
+                .await?)
         } else {
-            Ok(k3d.run()?)
+            Ok(k3d.run().await?)
         }
     }
 
@@ -73,39 +69,37 @@ impl BlockchainCluster for Blockchain {
         Ok(K3d::new()
             .cluster()
             .start(vec![&K3d::build_name(&self.name)])
-            .run()?)
+            .run()
+            .await?)
     }
 
     async fn stop(&self) -> Result<()> {
         Ok(K3d::new()
             .cluster()
             .stop(vec![&K3d::build_name(&self.name)])
-            .run()?)
+            .run()
+            .await?)
     }
 
     async fn delete(&self) -> Result<()> {
         Ok(K3d::new()
             .cluster()
             .delete(vec![&K3d::build_name(&self.name)])
-            .run()?)
+            .run()
+            .await?)
     }
 }
 
 impl BlockchainNode for Blockchain {
-    async fn create(&self, name: &str, config: Option<PathBuf>) -> Result<()> {
+    async fn create(&self, name: &str, role: &str, config: Option<PathBuf>) -> Result<()> {
         let k3d: K3d<K3dNodeCreate> = K3d::new().node().create(&name);
         if let Some(config) = config {
             Ok(k3d
                 .k3s_arg(&format!("--config={}", config.to_str().unwrap()))
-                .run()?)
+                .run()
+                .await?)
         } else {
-            Ok(k3d
-                .cluster(&self.name)
-                .k3s_arg(&format!(
-                    "--config={}",
-                    "/workspaces/BlockLocal/bl_core/config/k8s/blockchains/xrpl/validator.yaml"
-                ))
-                .run()?)
+            Ok(k3d.cluster(&self.name).role(role).run().await?)
         }
     }
 
@@ -113,20 +107,23 @@ impl BlockchainNode for Blockchain {
         Ok(K3d::new()
             .node()
             .start(&K3d::build_name(&format!("{}-{}", self.name, name)))
-            .run()?)
+            .run()
+            .await?)
     }
 
     async fn stop(&self, name: &str) -> Result<()> {
         Ok(K3d::new()
             .node()
             .stop(&K3d::build_name(&format!("{}-{}", self.name, name)))
-            .run()?)
+            .run()
+            .await?)
     }
 
     async fn delete(&self, name: &str) -> Result<()> {
         Ok(K3d::new()
             .node()
             .delete(&K3d::build_name(&format!("{}-{}", self.name, name)))
-            .run()?)
+            .run()
+            .await?)
     }
 }
