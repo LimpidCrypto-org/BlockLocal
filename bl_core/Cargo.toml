@@ -6,14 +6,20 @@ edition = "2021"
 [features]
 
 [dependencies]
-k3d = { path = "../k3d" }
-kube = { version = "0.98.0", features = ["runtime", "derive"] }
-k8s-openapi = { version = "0.24.0", features = ["latest"] }
+entity = { path = "entity" }
+migration = { path = "migration" }
+# k3d = { path = "../k3d" }
+# kube = { version = "0.98.0", features = ["runtime", "derive"] }
+# k8s-openapi = { version = "0.24.0", features = ["latest"] }
 serde = { version = "1.0.217", features = ["derive"] }
 thiserror = { version = "2.0.11" }
 url = "2.5.4"
 ipnet = "2.11.0"
 docker-compose-types = "0.16.0"
-
-[dev-dependencies]
-tokio = { version = "1.43.0", features = ["full"] }
+sea-orm = { version = "1.1", features = [
+    "sqlx-postgres",
+    "runtime-tokio-rustls",
+    "macros",
+] }
+tokio = { version = "1", features = ["process", "rt"] }
+log = "0.4.26"

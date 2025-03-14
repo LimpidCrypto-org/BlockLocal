@@ -2,6 +2,7 @@
 
 pub mod blockchain;
 pub mod client;
+mod db;
 pub mod errors;
 pub mod orchastration;
 

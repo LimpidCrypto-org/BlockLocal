@@ -1,4 +1,4 @@
-use ipnet::{IpNet, Ipv4Net};
+use ipnet::IpNet;
 
 use super::image::ImageConfig;
 
