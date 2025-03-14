@@ -1,7 +1,6 @@
-use std::{
-    marker::PhantomData,
-    process::{Command, Output},
-};
+#![allow(async_fn_in_trait)]
+
+use std::{marker::PhantomData, process::Output};
 
 pub mod cluster;
 mod errors;
@@ -11,6 +10,7 @@ use cluster::K3dCluster;
 pub use errors::Error;
 use errors::Result;
 use node::K3dNode;
+use tokio::process::Command;
 
 #[derive(Debug)]
 pub struct K3dNoCmd;
@@ -37,7 +37,7 @@ pub trait K3dHelp<T> {
 }
 
 pub trait K3dRun<'a> {
-    fn run(&'a mut self) -> Result<()>;
+    async fn run(&'a mut self) -> Result<()>;
     fn check_for_fatal_errors(output: Output) -> Result<()> {
         if !output.status.success() {
             let stderr = String::from_utf8(output.stderr)?;

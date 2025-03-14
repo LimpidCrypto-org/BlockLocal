@@ -2,7 +2,7 @@
 // README at: https://github.com/devcontainers/templates/tree/main/src/rust
 {
 	"name": "blocklocal",
-	"dockerFile": "Dockerfile",
+	"dockerComposeFile": "docker-compose.yaml",
 	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
 	"customizations": {
 		"vscode": {
@@ -15,7 +15,8 @@
 				"donjayamanne.git-extension-pack",
 				"swellaby.rust-pack",
 				"ms-kubernetes-tools.vscode-kubernetes-tools",
-				"fill-labs.dependi"
+				"fill-labs.dependi",
+				"DavidAnson.vscode-markdownlint"
 			]
 		}
 	},
@@ -26,8 +27,9 @@
 		"ghcr.io/devcontainers/features/docker-outside-of-docker:1": {}
 	},
 	"forwardPorts": [
-		8080
+		5432
 	],
+	"initializeCommand": "chmod +x ./.devcontainer/init.sh && ./.devcontainer/init.sh",
 	"postStartCommand": "chmod +x ./.devcontainer/start.sh && ./.devcontainer/start.sh"
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "privileged": true

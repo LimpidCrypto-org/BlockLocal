@@ -1,0 +1,25 @@
+version: "3"
+services:
+  blocklocal:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: blocklocal
+    networks:
+      - blocklocal
+  blocklocal-db:
+    image: postgres:latest
+    container_name: blocklocal-db
+    environment:
+      POSTGRES_USER: $DB_USER
+      POSTGRES_PASSWORD: $DB_PASSWORD
+      POSTGRES_DB: $DB_NAME
+    ports:
+      - DB_PORT:5432
+    restart: unless-stopped
+    networks:
+      - blocklocal
+
+networks:
+  blocklocal:
+    driver: bridge

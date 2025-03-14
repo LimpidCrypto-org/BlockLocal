@@ -22,8 +22,8 @@ impl K3dClusterDeleteArgs for K3d<K3dClusterDelete> {
 }
 
 impl<'a> K3dRun<'a> for K3d<K3dClusterDelete> {
-    fn run(&'a mut self) -> Result<()> {
-        let output = self.cmd.spawn()?.wait_with_output()?;
+    async fn run(&'a mut self) -> Result<()> {
+        let output = self.cmd.spawn()?.wait_with_output().await?;
         Self::check_for_fatal_errors(output)?;
 
         Ok(())

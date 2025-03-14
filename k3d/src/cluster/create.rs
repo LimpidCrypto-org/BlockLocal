@@ -246,8 +246,8 @@ impl K3dClusterCreateArgs for K3d<K3dClusterCreate> {
 }
 
 impl<'a> K3dRun<'a> for K3d<K3dClusterCreate> {
-    fn run(&'a mut self) -> Result<()> {
-        let output = self.cmd.spawn()?.wait_with_output()?;
+    async fn run(&'a mut self) -> Result<()> {
+        let output = self.cmd.spawn()?.wait_with_output().await?;
         Self::check_for_fatal_errors(output)?;
 
         Ok(())
