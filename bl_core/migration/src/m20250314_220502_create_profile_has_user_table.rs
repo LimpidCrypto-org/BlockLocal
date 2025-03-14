@@ -27,8 +27,8 @@ impl MigrationTrait for Migration {
         manager
             .create_foreign_key(
                 ForeignKey::create()
-                    .from_col(ProfileHasUser::ProfileId)
-                    .to_col(Profiles::Id)
+                    .from(ProfileHasUser::Table, ProfileHasUser::ProfileId)
+                    .to(Profiles::Table, Profiles::Id)
                     .on_delete(ForeignKeyAction::Cascade)
                     .name(FK_PROFILE_HAS_USER_PROFILE_ID)
                     .to_owned(),
@@ -37,8 +37,8 @@ impl MigrationTrait for Migration {
         manager
             .create_foreign_key(
                 ForeignKey::create()
-                    .from_col(ProfileHasUser::UserId)
-                    .to_col(Users::Id)
+                    .from(ProfileHasUser::Table, ProfileHasUser::UserId)
+                    .to(Users::Table, Users::Id)
                     .on_delete(ForeignKeyAction::Cascade)
                     .name(FK_PROFILE_HAS_USER_USER_ID)
                     .to_owned(),
