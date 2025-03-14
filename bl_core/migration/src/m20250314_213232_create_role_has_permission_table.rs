@@ -10,8 +10,8 @@ pub struct Migration;
 
 const FK_ROLE_HAS_PERMISSION_ROLE_ID: &str = "FK_roleHasPermission_roleId";
 const FK_ROLE_HAS_PERMISSION_PERMISSION_ID: &str = "FK_roleHasPermission_permissionId";
-const UQ_ROLE_HAS_PERMISSION_ROLE_ID_PERMISSION_ID: &str =
-    "UQ_roleHasPermission_roleId_permissionId";
+const PK_ROLE_HAS_PERMISSION_ROLE_ID_PERMISSION_ID: &str =
+    "PK_roleHasPermission_roleId_permissionId";
 
 #[async_trait::async_trait]
 impl MigrationTrait for Migration {
@@ -23,6 +23,12 @@ impl MigrationTrait for Migration {
                     .if_not_exists()
                     .col(integer(RoleHasPermission::RoleId))
                     .col(integer(RoleHasPermission::PermissionId))
+                    .primary_key(
+                        Index::create()
+                            .col(RoleHasPermission::RoleId)
+                            .col(RoleHasPermission::PermissionId)
+                            .name(PK_ROLE_HAS_PERMISSION_ROLE_ID_PERMISSION_ID),
+                    )
                     .to_owned(),
             )
             .await?;
@@ -45,17 +51,6 @@ impl MigrationTrait for Migration {
                     .name(FK_ROLE_HAS_PERMISSION_PERMISSION_ID)
                     .to_owned(),
             )
-            .await?;
-        manager
-            .create_index(
-                Index::create()
-                    .table(RoleHasPermission::Table)
-                    .col(RoleHasPermission::RoleId)
-                    .col(RoleHasPermission::PermissionId)
-                    .unique()
-                    .name(UQ_ROLE_HAS_PERMISSION_ROLE_ID_PERMISSION_ID)
-                    .to_owned(),
-            )
             .await
     }
 
@@ -64,7 +59,7 @@ impl MigrationTrait for Migration {
             .drop_index(
                 Index::drop()
                     .table(RoleHasPermission::Table)
-                    .name(UQ_ROLE_HAS_PERMISSION_ROLE_ID_PERMISSION_ID)
+                    .name(PK_ROLE_HAS_PERMISSION_ROLE_ID_PERMISSION_ID)
                     .to_owned(),
             )
             .await?;

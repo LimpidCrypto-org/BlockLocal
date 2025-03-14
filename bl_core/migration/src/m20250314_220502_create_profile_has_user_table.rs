@@ -9,7 +9,7 @@ pub struct Migration;
 
 const FK_PROFILE_HAS_USER_PROFILE_ID: &str = "FK_profileHasUser_profileId";
 const FK_PROFILE_HAS_USER_USER_ID: &str = "FK_profileHasUser_userId";
-const UQ_PROFILE_HAS_USER_PROFILE_ID_USER_ID: &str = "UQ_profileHasUser_profileId_userId";
+const PK_PROFILE_HAS_USER_PROFILE_ID_USER_ID: &str = "PK_profileHasUser_profileId_userId";
 
 #[async_trait::async_trait]
 impl MigrationTrait for Migration {
@@ -21,6 +21,12 @@ impl MigrationTrait for Migration {
                     .if_not_exists()
                     .col(integer(ProfileHasUser::ProfileId))
                     .col(integer(ProfileHasUser::UserId))
+                    .primary_key(
+                        Index::create()
+                            .col(ProfileHasUser::ProfileId)
+                            .col(ProfileHasUser::UserId)
+                            .name(PK_PROFILE_HAS_USER_PROFILE_ID_USER_ID),
+                    )
                     .to_owned(),
             )
             .await?;
@@ -43,17 +49,6 @@ impl MigrationTrait for Migration {
                     .name(FK_PROFILE_HAS_USER_USER_ID)
                     .to_owned(),
             )
-            .await?;
-        manager
-            .create_index(
-                Index::create()
-                    .table(ProfileHasUser::Table)
-                    .col(ProfileHasUser::ProfileId)
-                    .col(ProfileHasUser::UserId)
-                    .unique()
-                    .name(UQ_PROFILE_HAS_USER_PROFILE_ID_USER_ID)
-                    .to_owned(),
-            )
             .await
     }
 
@@ -62,7 +57,7 @@ impl MigrationTrait for Migration {
             .drop_index(
                 Index::drop()
                     .table(ProfileHasUser::Table)
-                    .name(UQ_PROFILE_HAS_USER_PROFILE_ID_USER_ID)
+                    .name(PK_PROFILE_HAS_USER_PROFILE_ID_USER_ID)
                     .to_owned(),
             )
             .await?;

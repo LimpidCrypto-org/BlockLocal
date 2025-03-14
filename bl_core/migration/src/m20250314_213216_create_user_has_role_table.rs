@@ -7,7 +7,7 @@ use crate::{
 #[derive(DeriveMigrationName)]
 pub struct Migration;
 
-const UQ_USER_HAS_ROLE_USER_ID_PERMISSION_ID: &str = "UQ_userHasRole_userId_permissionId";
+const PK_USER_HAS_ROLE_USER_ID_PERMISSION_ID: &str = "PK_userHasRole_userId_permissionId";
 const FK_USER_HAS_ROLE_USER_ID: &str = "FK_userHasRole_userId";
 const FK_USER_HAS_ROLE_ROLE_ID: &str = "FK_userHasRole_roleId";
 
@@ -21,6 +21,12 @@ impl MigrationTrait for Migration {
                     .if_not_exists()
                     .col(integer(UserHasRole::UserId))
                     .col(integer(UserHasRole::RoleId))
+                    .primary_key(
+                        Index::create()
+                            .col(UserHasRole::UserId)
+                            .col(UserHasRole::RoleId)
+                            .name(PK_USER_HAS_ROLE_USER_ID_PERMISSION_ID),
+                    )
                     .to_owned(),
             )
             .await?;
@@ -43,17 +49,6 @@ impl MigrationTrait for Migration {
                     .name(FK_USER_HAS_ROLE_ROLE_ID)
                     .to_owned(),
             )
-            .await?;
-        manager
-            .create_index(
-                Index::create()
-                    .table(UserHasRole::Table)
-                    .col(UserHasRole::UserId)
-                    .col(UserHasRole::RoleId)
-                    .unique()
-                    .name(UQ_USER_HAS_ROLE_USER_ID_PERMISSION_ID)
-                    .to_owned(),
-            )
             .await
     }
 
@@ -62,7 +57,7 @@ impl MigrationTrait for Migration {
             .drop_index(
                 Index::drop()
                     .table(UserHasRole::Table)
-                    .name(UQ_USER_HAS_ROLE_USER_ID_PERMISSION_ID)
+                    .name(PK_USER_HAS_ROLE_USER_ID_PERMISSION_ID)
                     .to_owned(),
             )
             .await?;
