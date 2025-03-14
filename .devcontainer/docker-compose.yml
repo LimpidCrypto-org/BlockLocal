@@ -1,21 +1,22 @@
 version: "3"
 services:
-  blocklocal:
+  app:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: blocklocal
+    command: sleep infinity
+    volumes:
+      - ../..:/workspaces:cached
     networks:
       - blocklocal
-  blocklocal-db:
+  db:
     image: postgres:latest
-    container_name: blocklocal-db
     environment:
       POSTGRES_USER: $DB_USER
       POSTGRES_PASSWORD: $DB_PASSWORD
       POSTGRES_DB: $DB_NAME
     ports:
-      - DB_PORT:5432
+      - $DB_PORT:5432
     restart: unless-stopped
     networks:
       - blocklocal

@@ -2,7 +2,8 @@
 // README at: https://github.com/devcontainers/templates/tree/main/src/rust
 {
 	"name": "blocklocal",
-	"dockerComposeFile": "docker-compose.yaml",
+	"dockerComposeFile": "docker-compose.yml",
+	"service": "app",
 	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
 	"customizations": {
 		"vscode": {
